@@ -1,0 +1,18 @@
+.socialplugin {
+    position:relative;
+    display:inline;
+    font-size:11pt;
+    opacity:0.3;
+    float:right;
+}
+.socialplugin a {
+    text-decoration:none;
+    color:#4C4B4A;
+}
+.socialplugin:hover {
+    opacity:1;
+    transition: all 0.5s ease-in-out 0s;
+}
+.socialplugin a:hover {
+    color:#C93030;
+}
