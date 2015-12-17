@@ -22,3 +22,6 @@ To enable the plugin, add `'social'` to your list of enabled plugins in `data/op
 ```
 $GLOBALS['config']['PLUGINS'] = array('qrcode', 'any_other_plugin', 'social')
 ```
+### Demo
+
+ - http://liens.effingo.be
