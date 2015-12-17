@@ -15,7 +15,7 @@ function hook_social_render_linklist($data)
 {
     $social_html = file_get_contents(PluginManager::$PLUGINS_PATH . '/social/social.html');
     foreach ($data['links'] as &$value) {
-        $social = sprintf($social_html, urlencode($value['real_url']), urlencode($value['title']));
+        $social = sprintf($social_html, urlencode($value['url']), urlencode($value['title']));
         $value['link_plugin'][] = $social;
     }
     return $data;   
