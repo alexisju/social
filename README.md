@@ -4,12 +4,11 @@ For each link in your Shaarli, this plugin adds links to share your bookmarks to
 
 ### Installation/configuration
 
-Clone this repository inside your `tpl/plugins/` directory, or download the archive and unpack it there.  
+Clone this repository inside your `plugins/` directory, or download the archive and unpack it there.  
 The directory structure should look like:
 
 ```
-└── tpl
-    └── plugins
+└── plugins
         └── social
             ├── README.md
             ├── social.php
