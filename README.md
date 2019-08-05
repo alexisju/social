@@ -1,3 +1,5 @@
+### Plugin unmaintained. Feel free to make a fork ou submit PR.
+
 ## Social share plugin for Shaarli
 
 For each link in your Shaarli, this plugin adds links to share your bookmarks to main social networks and by email (mailto).
