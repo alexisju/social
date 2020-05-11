@@ -1,0 +1,56 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Social plugin\n"
+"POT-Creation-Date: 2020-04-19 14:20+0200\n"
+"PO-Revision-Date: 2020-04-19 14:20+0200\n"
+"Last-Translator: agentcobra <agentcobra@free.fr>\n"
+"Language-Team: agentcobra\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.3\n"
+"X-Poedit-Basepath: ../../..\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-KeywordsList: ;social_t:1,2;social_t;t\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: social.php:117
+msgid ""
+"Add links to share your links to main social networks or by email (mailto)."
+msgstr ""
+"Ajoutez des liens pour partager vos liens vers les principaux réseaux "
+"sociaux ou par courriel (mailto)."
+
+#: social.php:118
+msgid "show Diaspora*"
+msgstr "afficher Diaspora*"
+
+#: social.php:119
+msgid "show Twitter"
+msgstr "afficher Twitter"
+
+#: social.php:120
+msgid "show Facebook"
+msgstr "afficher Facebook"
+
+#: social.php:121
+msgid "show Google"
+msgstr "afficher Google"
+
+#: social.php:122
+msgid "show LinkedIn"
+msgstr "afficher LinkedIn"
+
+#: social.php:123
+msgid "show Pinterest"
+msgstr "afficher Pinterest"
+
+#: social.php:124
+msgid "show Scoop.it"
+msgstr "afficher Scoop.it"
+
+#: social.php:125
+msgid "show mail"
+msgstr "afficher courriel"
