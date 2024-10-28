@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Plugin Social
 *
@@ -44,7 +45,7 @@ const EXT_TRANSLATION_DOMAIN = 'social';
 */
 function social_t($text, $nText = '', $nb = 1)
 {
-  return t($text, $nText, $nb, EXT_TRANSLATION_DOMAIN);
+    return t($text, $nText, $nb, EXT_TRANSLATION_DOMAIN);
 }
 
 /**
@@ -58,16 +59,17 @@ function social_t($text, $nText = '', $nb = 1)
 */
 function social_init($conf)
 {
-  if (! $conf->exists('translation.extensions.social')) {
-    // Custom translation with the domain 'social'
-    $conf->set('translation.extensions.social', 'plugins/social/languages/');
-    $conf->write(true);
-  }
-  $params = '';
-  foreach (SOCIAL_SHARE as $placeholder) {
-    $params .= trim($conf->get('plugins.'. $placeholder, ''));
-  }
-  return $errors;
+    $errors = null;
+    if (! $conf->exists('translation.extensions.social')) {
+      // Custom translation with the domain 'social'
+        $conf->set('translation.extensions.social', 'plugins/social/languages/');
+        $conf->write(true);
+    }
+    $params = '';
+    foreach (SOCIAL_SHARE as $placeholder) {
+        $params .= trim($conf->get('plugins.' . $placeholder, ''));
+    }
+    return $errors;
 }
 
 /**
@@ -87,8 +89,8 @@ function social_init($conf)
 */
 function hook_social_render_includes($data)
 {
-  $data['css_files'][] = PluginManager::$PLUGINS_PATH . '/social/social.css';
-  return $data;
+    $data['css_files'][] = PluginManager::$PLUGINS_PATH . '/social/social.css';
+    return $data;
 }
 
 /*
@@ -108,45 +110,45 @@ function hook_social_render_includes($data)
 *   - _LOGGEDIN_: true/false
 *
 * @param array $data data passed to plugin
+* @param string $parameter Plugin parameter name
 *
 * @return array altered $data.
 */
 function hook_social_render_linklist($data, $parameter)
 {
-  $config = $parameter->get('plugins');
-  $social_html='<!-- Socialplugin --><ul class="socialplugin">';
+    $config = array_filter($parameter->get('plugins'), function ($value, $key) {
+        return strpos($key, 'SOCIAL_') === 0 && $value !== "" && $value !== "0";
+    }, ARRAY_FILTER_USE_BOTH);
+// Trier le tableau filtré en fonction des valeurs
+    uasort($config, function ($a, $b) {
+        if (is_int($a) && is_int($b)) {
+            return $a <=> $b; // Comparaison pour les entiers
+        }
+        return strcmp((string)$a, (string)$b); // Comparaison pour les chaînes
+    });
 
-  if(filter_var($config['SOCIAL_ENABLE_SHARE_ON_DISPORA'], FILTER_VALIDATE_BOOLEAN)){
-    $social_html.='<li><a target="_blank" title="Diaspora*" href="http://sharetodiaspora.github.io/?url=%1$s&amp;title=%2$s" rel="nofollow" onclick="javascript:window.open(this.href, \'\', \'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700\');return false;"><img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Diaspora_logotype.svg" alt="diaspora*"></a></li>';
-  }
-  if(filter_var($config['SOCIAL_ENABLE_SHARE_ON_TWITTER'], FILTER_VALIDATE_BOOLEAN)){
-    $social_html.='<li><a target="_blank" title="Twitter" href="https://twitter.com/share?url=%1$s&amp;text=%2$s" rel="nofollow" onclick="javascript:window.open(this.href, \'\', \'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700\');return false;"><img src="../plugins/social/icons/Twitter.svg" alt="twitter"></a></li>';
-  }
-  if(filter_var($config['SOCIAL_ENABLE_SHARE_ON_FACEBOOK'], FILTER_VALIDATE_BOOLEAN)){
-    $social_html.='<li><a target="_blank" title="Facebook" href="https://www.facebook.com/sharer.php?u=%1$s&amp;t=%2$s" rel="nofollow" onclick="javascript:window.open(this.href, \'\', \'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700\');return false;"><img src="../plugins/social/icons/Facebook (2).svg" alt="facebook"></a></li>';
-  }
-  if(filter_var($config['SOCIAL_ENABLE_SHARE_ON_GOOGLE'], FILTER_VALIDATE_BOOLEAN)){
-    $social_html.='<li><a target="_blank" title="Google +" href="https://plus.google.com/share?url=%1$s&amp;hl=fr" rel="nofollow" onclick="javascript:window.open(this.href, \'\', \'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650\');return false;"><img src="../plugins/social/icons/googleplusicon.svg" alt="google+"></a></li>';
-  }
-  if(filter_var($config['SOCIAL_ENABLE_SHARE_ON_LINKEDIN'], FILTER_VALIDATE_BOOLEAN)){
-    $social_html.='<li><a target="_blank" title="LinkedIn" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=%1$s&amp;title=%2$s" rel="nofollow" onclick="javascript:window.open(this.href, \'\',\'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650\');return false;"><img src="../plugins/social/icons/linkedin.svg" alt="linkedin"></a></li>';
-  }
-  if(filter_var($config['SOCIAL_ENABLE_SHARE_ON_PINTEREST'], FILTER_VALIDATE_BOOLEAN)){
-    $social_html.='<li><a target="_blank" title="Pinterest" href="http://pinterest.com/pin/create/button/?url=%1$s&amp;media=%1$s&amp;description=%2$s" rel="nofollow" onclick="javascript:window.open(this.href, \'\',\'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650\');return false;"><img src="../plugins/social/icons/Pinterest.svg" alt="pinterest"></a></li>';
-  }
-  if(filter_var($config['SOCIAL_ENABLE_SHARE_ON_SCOOP'], FILTER_VALIDATE_BOOLEAN)){
-    $social_html.='<li><a target="_blank" title="Scoop.it" href="http://www.scoop.it/oexchange/share?url=%1$s&amp;title=%2$s" rel="nofollow" onclick="javascript:window.open(this.href, \'\', \'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=800px,width=1150px\');return false;"><img src="https://www.scoop.it/resources/img/homepage/logo-scoopit-blue.png" alt="scoop.it"></a></li>';
-  }
-  if(filter_var($config['SOCIAL_ENABLE_SHARE_ON_MAIL'], FILTER_VALIDATE_BOOLEAN)){
-    $social_html.='<li><a target="_blank" title="Envoyer par mail" href="mailto:?subject=%2$s&amp;body=%1$s" rel="nofollow">📧email</a>';
-  }
-  $social_html.='</ul><!-- /Socialplugin -->';
+    $template = [
+    'SOCIAL_ENABLE_SHARE_ON_DISPORA' => '<a target="_blank" title="Diaspora*" href="http://sharetodiaspora.github.io/?url=%1$s&amp;title=%2$s" rel="nofollow" onclick="javascript:window.open(this.href, \'\', \'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700\');return false;"><img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Diaspora_logotype.svg" alt="diaspora*"></a>',
+    'SOCIAL_ENABLE_SHARE_ON_FACEBOOK' => '<a target="_blank" title="Facebook" href="https://www.facebook.com/sharer.php?u=%1$s&amp;t=%2$s" rel="nofollow" onclick="javascript:window.open(this.href, \'\', \'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700\');return false;"><img src="../plugins/social/icons/Facebook (2).svg" alt="facebook"></a>',
+    'SOCIAL_ENABLE_SHARE_ON_GOOGLE' => '<a target="_blank" title="Google +" href="https://plus.google.com/share?url=%1$s&amp;hl=fr" rel="nofollow" onclick="javascript:window.open(this.href, \'\', \'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650\');return false;"><img src="../plugins/social/icons/googleplusicon.svg" alt="google+"></a>',
+    'SOCIAL_ENABLE_SHARE_ON_LINKEDIN' => '<a target="_blank" title="LinkedIn" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=%1$s&amp;title=%2$s" rel="nofollow" onclick="javascript:window.open(this.href, \'\',\'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650\');return false;"><img src="../plugins/social/icons/linkedin.svg" alt="linkedin"></a>',
+    'SOCIAL_ENABLE_SHARE_ON_PINTEREST' => '<a target="_blank" title="Pinterest" href="http://pinterest.com/pin/create/button/?url=%1$s&amp;media=%1$s&amp;description=%2$s" rel="nofollow" onclick="javascript:window.open(this.href, \'\',\'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650\');return false;"><img src="../plugins/social/icons/Pinterest.svg" alt="pinterest"></a>',
+    'SOCIAL_ENABLE_SHARE_ON_SCOOP' => '<a target="_blank" title="Scoop.it" href="http://www.scoop.it/oexchange/share?url=%1$s&amp;title=%2$s" rel="nofollow" onclick="javascript:window.open(this.href, \'\', \'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=800px,width=1150px\');return false;"><img src="https://www.scoop.it/resources/img/homepage/logo-scoopit-blue.png" alt="scoop.it"></a>',
+    'SOCIAL_ENABLE_SHARE_ON_TWITTER' => '<a target="_blank" title="Twitter" href="https://twitter.com/share?url=%1$s&amp;text=%2$s" rel="nofollow" onclick="javascript:window.open(this.href, \'\', \'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700\');return false;"><img src="../plugins/social/icons/Twitter.svg" alt="twitter"></a>',
+    'SOCIAL_ENABLE_SHARE_ON_MAIL' => '<a target="_blank" title="Envoyer par mail" href="mailto:?subject=%2$s&amp;body=%1$s" rel="nofollow">📧email</a>'
+    ];
 
-  foreach ($data['links'] as &$value) {
-    $social = sprintf($social_html, urlencode($value['url']), urlencode($value['title']));
-    $value['link_plugin'][] = $social;
-  }
-  return $data;
+    $social_html = '<!-- Socialplugin --><ul class="socialplugin">';
+    foreach ($config as $key => $value) {
+        $social_html .= '<li>' . $template[$key] . '</li>';
+    }
+    $social_html .= '</ul><!-- /Socialplugin -->';
+
+    foreach ($data['links'] as &$value) {
+        $social = sprintf($social_html, urlencode($value['url']), urlencode($value['title']));
+        $value['link_plugin'][] = $social;
+    }
+    return $data;
 }
 
 /**
@@ -155,13 +157,13 @@ function hook_social_render_linklist($data, $parameter)
 function default_social_translation()
 {
   // meta
-  social_t('Add links to share your links to main social networks or by email (mailto).');
-  social_t('show Diaspora*');
-  social_t('show Twitter');
-  social_t('show Facebook');
-  social_t('show Google');
-  social_t('show LinkedIn');
-  social_t('show Pinterest');
-  social_t('show Scoop.it');
-  social_t('show mail');
+    social_t('Add links to share your links to main social networks or by email (mailto).');
+    social_t('show Diaspora*');
+    social_t('show Twitter');
+    social_t('show Facebook');
+    social_t('show Google');
+    social_t('show LinkedIn');
+    social_t('show Pinterest');
+    social_t('show Scoop.it');
+    social_t('show mail');
 }
